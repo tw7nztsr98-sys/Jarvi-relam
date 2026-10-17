@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARVI REALM - V2</title>
+    <title>JARVI REALM</title>
     
+    <!-- إعدادات PWA للآيفون -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="JARVI V2">
+    <meta name="apple-mobile-web-app-title" content="JARVI">
     <link rel="apple-touch-icon" href="https://via.placeholder.com/192/000000/ff0000?text=JARVI">
 
     <style>
@@ -22,28 +23,18 @@
         }
 
         body {
-            background-color: #030000;
-            color: #ff1a1a;
-            font-family: 'Noto Sans Arabic', 'Amiri', serif;
+            background-color: #000000;
+            color: #fff;
+            font-family: 'Noto Sans Arabic', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at center, #260000 0%, #000000 95%);
+            background-image: radial-gradient(circle at center, #150000 0%, #000000 100%);
         }
 
-        /* تأثير التشويش المرعب */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
-            z-index: 999;
-        }
-
+        /* 1. شاشة الدخول الأولى بالهوية المطلوبة */
         #entry-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -59,44 +50,44 @@
 
         .dev-title {
             font-family: 'Amiri', serif;
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 15px #ff0000, 0 0 30px #8b0000;
-            margin-bottom: 8px;
-            animation: pulseGlow 2s infinite alternate;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
 
         .realm-subtitle {
             font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            color: #800000;
-            letter-spacing: 10px;
+            font-size: 1.2rem;
+            color: #770000;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            margin-bottom: 45px;
+            margin-bottom: 35px;
         }
 
         .enter-btn {
-            background: rgba(40, 0, 0, 0.6);
-            border: 2px solid #b30000;
-            color: #ff3333;
-            padding: 16px 50px;
-            font-size: 1.3rem;
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 12px 40px;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(179, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
         }
 
         .enter-btn:active {
             background: #ff0000;
             color: #000;
-            box-shadow: 0 0 40px #ff0000;
-            transform: scale(0.96);
+            box-shadow: 0 0 25px #ff0000;
         }
 
+        /* 2. شاشة العد التنازلي مع نبضات القلب */
         #countdown-screen {
             display: none;
             position: fixed;
@@ -109,126 +100,12 @@
         }
 
         .countdown-number {
-            font-size: 9rem;
+            font-size: 7rem;
             font-weight: 900;
             color: #ff0000;
-            text-shadow: 0 0 50px #ff0000, 0 0 100px #660000;
+            text-shadow: 0 0 35px #ff0000;
             animation: pulse 1s infinite;
             font-family: 'Cinzel', serif;
-        }
-
-        #main-container {
-            display: none;
-            width: 100%;
-            max-width: 680px;
-            min-height: 100vh;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .chat-box {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin-bottom: 25px;
-            background: rgba(10, 0, 0, 0.85);
-            border: 1px solid rgba(179, 0, 0, 0.4);
-            padding: 30px;
-            border-radius: 6px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(179, 0, 0, 0.15);
-        }
-
-        .message {
-            margin-bottom: 20px;
-            line-height: 2.2;
-            white-space: pre-wrap;
-            font-size: 1.25rem;
-            color: #e6e6e6;
-            text-shadow: 0 0 4px rgba(255, 0, 0, 0.4);
-        }
-
-        .sub-trans {
-            display: block;
-            color: #666;
-            font-size: 0.85rem;
-            font-family: 'Cinzel', serif;
-            margin-top: 8px;
-            direction: ltr;
-            text-align: right;
-            letter-spacing: 1px;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .opt-btn {
-            background: rgba(20, 0, 0, 0.9);
-            border: 1px solid #660000;
-            color: #cccccc;
-            padding: 18px;
-            border-radius: 4px;
-            text-align: right;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.05rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
-        }
-
-        .opt-btn:active {
-            border-color: #ff0000;
-            color: #ffffff;
-            background: rgba(100, 0, 0, 0.7);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-        }
-
-        .input-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        .custom-input {
-            flex-grow: 1;
-            background: #050000;
-            border: 1px solid #660000;
-            color: #fff;
-            padding: 16px;
-            border-radius: 4px;
-            font-size: 1rem;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .custom-input:focus {
-            border-color: #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-        }
-
-        .send-btn {
-            background: #330000;
-            border: 1px solid #990000;
-            color: #ff4d4d;
-            padding: 0 25px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .send-btn:active {
-            background: #ff0000;
-            color: #000;
-            box-shadow: 0 0 20px #ff0000;
         }
 
         @keyframes pulse {
@@ -237,24 +114,130 @@
             100% { transform: scale(0.9); opacity: 0.6; }
         }
 
-        @keyframes pulseGlow {
-            0% { text-shadow: 0 0 10px #ff0000; }
-            100% { text-shadow: 0 0 25px #ff0000, 0 0 40px #8b0000; }
+        /* 3. الواجهة الرئيسية */
+        #main-container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            min-height: 100vh;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px 20px;
+            position: relative;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: rgba(8, 0, 0, 0.8);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 6px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.8);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            line-height: 2.2; /* ضبط المسافات بدقة تكلية */
+            white-space: pre-wrap;
+            font-size: 1.15rem;
+            color: #f1f1f1;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .opt-btn {
+            background: rgba(15, 0, 0, 0.9);
+            border: 1px solid #400000;
+            color: #cccccc;
+            padding: 14px 18px;
+            border-radius: 4px;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .opt-btn:active {
+            border-color: #ff0000;
+            color: #fff;
+            background: rgba(60, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .sub-trans {
+            display: block;
+            color: #666666;
+            font-size: 0.75rem; /* خط أصغر بالإنجليزية كما طلبت */
+            font-family: 'Cinzel', serif;
+            margin-top: 4px;
+            direction: ltr;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .custom-input {
+            flex-grow: 1;
+            background: #050000;
+            border: 1px solid #400000;
+            color: #fff;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .custom-input:focus {
+            border-color: #ff0000;
+        }
+
+        .send-btn {
+            background: #200000;
+            border: 1px solid #600000;
+            color: #ff3333;
+            padding: 0 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .send-btn:active {
+            background: #ff0000;
+            color: #000;
         }
     </style>
 </head>
 <body>
 
+    <!-- 1. شاشة الدخول الأولى -->
     <div id="entry-screen">
         <div class="dev-title">من صناعة وتطوير Why Matter</div>
-        <div class="realm-subtitle">jarvi realm</div>
+        <div class="realm-subtitle">jarvi</div>
         <button class="enter-btn" onclick="startExperience()">[ دخول ]</button>
     </div>
 
+    <!-- 2. شاشة العد التنازلي -->
     <div id="countdown-screen">
         <div class="countdown-number" id="cnt">3</div>
     </div>
 
+    <!-- 3. الواجهة الرئيسية -->
     <div id="main-container">
         <div class="chat-box" id="chatBox">
             <div class="message" id="typewriterText"></div>
@@ -282,8 +265,8 @@
     </div>
 
     <script>
+        // صوت نبضات القلب فقط للعد التنازلي (بدون إزعاج الكيبورد)
         const heartbeatAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-        const keyAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
         const beepAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
         
         heartbeatAudio.loop = true;
@@ -292,6 +275,7 @@
             document.getElementById('entry-screen').style.display = 'none';
             document.getElementById('countdown-screen').style.display = 'flex';
             
+            // تشغيل نبضات القلب
             heartbeatAudio.play().catch(() => {});
 
             let count = 3;
@@ -305,6 +289,8 @@
                     beepAudio.play().catch(() => {});
                 } else {
                     clearInterval(timer);
+                    // إيقاف دقات القلب عند الدخول للموقع
+                    heartbeatAudio.pause();
                     document.getElementById('countdown-screen').style.display = 'none';
                     document.getElementById('main-container').style.display = 'flex';
                     initAIIntro();
@@ -312,6 +298,7 @@
             }, 1000);
         }
 
+        // دالة طباعة النصوص بمسافات صريحة ومنظمة وبدون صوت مزعج
         function typeWriter(text, elementId, speed = 35, callback = null) {
             const elem = document.getElementById(elementId);
             elem.innerHTML = '';
@@ -319,14 +306,8 @@
 
             function writeChar() {
                 if (index < text.length) {
-                    const char = text.charAt(index);
-                    elem.textContent += char;
+                    elem.textContent += text.charAt(index);
                     index++;
-                    
-                    if (char !== ' ') {
-                        keyAudio.currentTime = 0;
-                        keyAudio.play().catch(() => {});
-                    }
                     setTimeout(writeChar, speed);
                 } else if (callback) {
                     callback();
@@ -337,7 +318,7 @@
 
         function initAIIntro() {
             const introText = "مرحباً بك في JARVI REALM...\nأنا المساعد الذكي المخصص لخدمتك بالريلم. اختر من الخيارات أدناه أو اطرح سؤالك مباشر.";
-            typeWriter(introText, 'typewriterText', 35, () => {
+            typeWriter(introText, 'typewriterText', 30, () => {
                 document.getElementById('optionsBox').style.display = 'flex';
             });
         }
@@ -355,6 +336,7 @@
             }
         }
 
+        // الردود الذكية الصارمة حصرياً للريلم
         function processQuery(query) {
             const lowerQuery = query.toLowerCase();
             let response = "";
