@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستشار الريلم - Why Matter</title>
+    <title>Jarvi - مستشار الريلم</title>
+    
+    <!-- إعدادات عشان يظهر كـ تطبيق حقيقي عند إضافته للشاشة الرئيسية -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Jarvi">
+    <link rel="apple-touch-icon" href="icon.png"> <!-- حط صورة الأيقونة هنا -->
+
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -277,12 +284,12 @@
 
     <!-- الشاشة الخامسة: المحادثة AI -->
     <div id="screen-chat" class="screen">
-        <div class="branding" style="font-size: 1rem; margin-bottom: 15px;">مستشار الريلم الذكي</div>
+        <div class="branding" style="font-size: 1rem; margin-bottom: 15px;">Jarvi - المستشار الذكي</div>
         <div class="chat-box" id="chat-box">
             <div class="msg bot">تم تطويري وصناعتي من قبل Why Matter لأكون عصاك اللي ما تعصاك.</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="اسأل المستشار..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="chat-input" placeholder="اسأل Jarvi..." onkeypress="handleKeyPress(event)">
             <button class="send-btn" onclick="sendChatMessage()">إرسال</button>
         </div>
     </div>
@@ -290,7 +297,7 @@
 </div>
 
 <script>
-    // Audio Context لتوليد أصوات طباعة ومؤثرات سينمائية دون الحاجة لملفات خارجية
+    // Audio Context لتوليد أصوات الطباعة والمسح برمجياً
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     function playTypeSound() {
@@ -321,7 +328,6 @@
         osc.stop(audioCtx.currentTime + 0.03);
     }
 
-    // إدارة الأسئلة والإجابات
     const questions = [
         { ar: "من انت ؟", en: "WHO ARE YOU?" },
         { ar: "ما اسلوب قتالك في الريلم ؟", en: "WHAT IS YOUR COMBAT STYLE IN THE REALM?" },
@@ -341,7 +347,6 @@
         typeQuestion(questions[currentStep].ar, questions[currentStep].en);
     }
 
-    // دالة كتابة النص حرف حرف
     function typeQuestion(textAr, textEn, callback) {
         let arIndex = 0;
         let enIndex = 0;
@@ -376,7 +381,6 @@
         }, 60);
     }
 
-    // دالة مسح النص حرف حرف (تأثير الشخص الذي يمسح)
     function eraseQuestion(callback) {
         const elAr = document.getElementById('text-ar');
         const elEn = document.getElementById('text-en');
@@ -445,7 +449,6 @@
         showScreen('screen-chat');
     }
 
-    // منطق المستشار الذكي AI
     function sendChatMessage() {
         const inputEl = document.getElementById('chat-input');
         const text = inputEl.value.trim();
@@ -476,28 +479,30 @@
     function getAIReply(query) {
         const q = query.toLowerCase();
         
-        // الرد التلقائي للتعريف بنفسه
         if (q.includes("من انت") || q.includes("من أنت") || q.includes("عرف عن نفسك") || q.includes("مين انت")) {
             return "تم تطويري وصناعتي من قبل Why Matter لأكون عصاك اللي ما تعصاك.";
         }
 
-        // الكلمات المتعلقة بـ ماينكرافت والريلم
-        const realmKeywords = ["ريلم", "ماينكرافت", "ريدستون", "بناء", "وحوش", "قتال", "سيف", "دروع", "مملكة", "قرية", "realm", "minecraft", "سيرفر", "فارم", "مزرعة", "دايموند", "نذر"];
-        
-        const isRealmRelated = realmKeywords.some(keyword => q.includes(keyword));
+        const pureRealWorldKeywords = ["الطقس اليوم", "أخبار العالم", "سعر الدولار", "سيارة", "طيارة واقعية", "جامعة", "مدرسة واقعية", "شغل بالواقع"];
+        const isStrictlyOut = pureRealWorldKeywords.some(kw => q.includes(kw));
 
-        if (isRealmRelated) {
-            if (q.includes("ريدستون")) {
-                return `أهلاً بك يا ${userData.name}. بالنسبة للريدستون في الريلم، أنصحك دائمًا بتخفيف المقارنات التكرارية (Repeaters) لتقليل اللاق بالسيرفر، واعتمد على التصاميم المدمجة!`;
-            }
-            if (q.includes("قتال") || q.includes("سلاح") || q.includes("دروع")) {
-                return `بما أن أسلوبك في القتال هو (${userData.style})، تأكد من تطوير دروعك بتطويرات Protection IV و Unbreaking III، ولا تنسَ تفاح الموت (Golden Apples) قبل أي مواجهة!`;
-            }
-            return `أنا هنا لخدمتك وتحقيق هدفك (${userData.goal}) داخل الريلم. اعطني سؤالك المحدد عن ماينكرافت أو استراتيجيات السيرفر وسأوجهك مباشرة!`;
-        } else {
-            // أي موضوع خارج الريلم
-            return "تم تطويري لأساعدك فقط بالريلم.";
+        if (isStrictlyOut) {
+            return "تم تطويري لأساعدك فقط بالريلم وما يتعلق بعالم ماينكرافت.";
         }
+
+        if (q.includes("بناء") || q.includes("بنايات") || q.includes("ابني") || q.includes("تصميم") || q.includes("افكار بناء") || q.includes("أفكار بناء")) {
+            return `أهلاً يا ${userData.name}! إليك أفكار بنايات رهيبة تناسب الريلم:\n1. قصر كلاسيكي أو قلعة نذر بأسلوب الجوثيك (Gothic style).\n2. مجلس أمة / برلمان مصمم بالحجر والمصباح الريدستوني للحوارات والتصويت بين أعضاء الريلم.\n3. مدينة تحت الأرض (Underground City) مضاءة بالأميثيست والروست.\n4. برج مراقبة أوتوماتيكي فيه بوابات ريدستون وأبراج إرسال!`;
+        }
+
+        if (q.includes("سياسه") || q.includes("سياسة") || q.includes("مجلس") || q.includes("ديموقراط") || q.includes("ديمقراط") || q.includes("قوانين") || q.includes("ادارة") || q.includes("نظام")) {
+            return `لتطبيق نظام سياسي أو ديمقراطي مميز داخل قاعة مجلس الأمة بالريلم:\n- **نظام التصويت الريدستوني:** كل عضو يدخل غرفة تصويت مصغرة ويرمي خشب/دايموند في الهوبر لتسجيل صوته تلقائياً على الشاشة.\n- **دستور الريلم:** كتاب وقلم (Book & Quill) يتم وضعه على منصة القراءة (Lectern) فيه قوانين السيرفر، عقوبات التخريب، وحقوق كل لاعب.\n- **انتخابات الأونرية/المشرفين:** فترة انتخابية كل شهر يصوت فيها أعضاء السيرفر للاعب الذي يمثلهم ويمسك رتبة الإدارة!`;
+        }
+
+        if (q.includes("قتال") || q.includes("سلاح") || q.includes("دروع") || q.includes("حرب") || q.includes("pvp")) {
+            return `بما أن أسلوبك هو (${userData.style}), ننصحك بالاعتماد على دروع النذرايت الكاملة بـ Protection IV، ومجموعات التناغم بين القوس والدرع، وتجهيز ساحة PvP مخصصة ومحاطة بالـ Bedrock لضمان عدالة القتال بالريلم!`;
+        }
+
+        return `أهلاً بك يا ${userData.name}. بصفتي مستشارك الخاص Jarvi لتحقيق هدفك (${userData.goal}), أنا جاهز لإعطائك أفضل الأفكار، أنظمة الريدستون، تصاميم المباني، وخطط إدارة السيرفر بالريلم! ما الخطوة التالية التي تريد تنفيذها؟`;
     }
 </script>
 
