@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jarvi - مستشار الريلم</title>
     
-    <!-- إعدادات عشان يظهر كـ تطبيق حقيقي عند إضافته للشاشة الرئيسية -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Jarvi">
-    <link rel="apple-touch-icon" href="icon.png"> <!-- حط صورة الأيقونة هنا -->
+    <link rel="apple-touch-icon" href="icon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     <style>
@@ -50,7 +49,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 30px 24px;
+            padding: 25px 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
             text-align: center;
             display: none;
@@ -69,7 +68,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Screen 1: Welcome */
+        /* Branding */
         .branding {
             font-size: 1.2rem;
             color: var(--accent-color);
@@ -98,7 +97,7 @@
             box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
         }
 
-        /* Interactive Questions */
+        /* Typing Questions */
         .typing-container {
             min-height: 100px;
             display: flex;
@@ -110,7 +109,7 @@
         }
 
         .question-ar {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #fff;
             min-height: 2.2rem;
@@ -150,7 +149,7 @@
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
         }
 
-        /* Status / Loading Screen */
+        /* Status */
         .status-text {
             font-size: 1.2rem;
             color: var(--accent-color);
@@ -162,7 +161,7 @@
             50% { opacity: 0.4; }
         }
 
-        /* Profile Summary Card */
+        /* Summary */
         .info-card {
             width: 100%;
             background: #0d1017;
@@ -183,10 +182,10 @@
             margin-left: 8px;
         }
 
-        /* Chat Interface */
+        /* Chat */
         .chat-box {
             width: 100%;
-            height: 320px;
+            height: 300px;
             overflow-y: auto;
             background: #0a0c0f;
             border-radius: 10px;
@@ -195,16 +194,17 @@
             flex-direction: column;
             gap: 12px;
             border: 1px solid var(--border-color);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .msg {
-            max-width: 85%;
-            padding: 10px 14px;
+            max-width: 88%;
+            padding: 12px 16px;
             border-radius: 10px;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 0.92rem;
+            line-height: 1.6;
             word-wrap: break-word;
+            white-space: pre-line;
         }
 
         .msg.bot {
@@ -223,21 +223,49 @@
             font-weight: 700;
         }
 
+        .quick-tools {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+
+        .tool-btn {
+            background: #121721;
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+        }
+
         .chat-input-area {
             display: flex;
             width: 100%;
-            gap: 10px;
+            gap: 8px;
         }
 
         .chat-input-area input {
             text-align: right;
+            padding: 10px;
+            font-size: 0.9rem;
         }
 
         .send-btn {
             background: var(--accent-color);
             color: #000;
             border: none;
-            padding: 0 20px;
+            padding: 0 16px;
             font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
@@ -254,7 +282,7 @@
         <button class="btn" onclick="startApp()">دخول</button>
     </div>
 
-    <!-- الشاشة الثانية: الأسئلة المتتابعة -->
+    <!-- الشاشة الثانية: الأسئلة -->
     <div id="screen-question" class="screen">
         <div class="typing-container">
             <div id="text-ar" class="question-ar"></div>
@@ -266,7 +294,7 @@
         </div>
     </div>
 
-    <!-- الشاشة الثالثة: الانتظار / رصد البيانات -->
+    <!-- الشاشة الثالثة: الانتظار -->
     <div id="screen-status" class="screen">
         <div id="status-text" class="status-text"></div>
     </div>
@@ -284,10 +312,20 @@
 
     <!-- الشاشة الخامسة: المحادثة AI -->
     <div id="screen-chat" class="screen">
-        <div class="branding" style="font-size: 1rem; margin-bottom: 15px;">Jarvi - المستشار الذكي</div>
+        <div class="branding" style="font-size: 1rem; margin-bottom: 10px;">Jarvi - المستشار الذكي</div>
+        
         <div class="chat-box" id="chat-box">
             <div class="msg bot">تم تطويري وصناعتي من قبل Why Matter لأكون عصاك اللي ما تعصاك.</div>
         </div>
+
+        <!-- الأزرار التكتيكية الجديدة -->
+        <div class="quick-tools">
+            <button class="tool-btn" onclick="quickSend('ابي خطة كشف البيوت')">🔍 كشف بيوت</button>
+            <button class="tool-btn" onclick="quickSend('ابي خطة استدراج غادرة')">🎯 خطة استدراج</button>
+            <button class="tool-btn" onclick="quickSend('اقترح لي فعالية جديدة للريلم')">🎮 فعاليات الريلم</button>
+            <button class="tool-btn" onclick="quickSend('كيف احمي بيتي من الغدر؟')">🛡️ خطة دفاع</button>
+        </div>
+
         <div class="chat-input-area">
             <input type="text" id="chat-input" placeholder="اسأل Jarvi..." onkeypress="handleKeyPress(event)">
             <button class="send-btn" onclick="sendChatMessage()">إرسال</button>
@@ -297,7 +335,6 @@
 </div>
 
 <script>
-    // Audio Context لتوليد أصوات الطباعة والمسح برمجياً
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     function playTypeSound() {
@@ -449,6 +486,11 @@
         showScreen('screen-chat');
     }
 
+    function quickSend(text) {
+        document.getElementById('chat-input').value = text;
+        sendChatMessage();
+    }
+
     function sendChatMessage() {
         const inputEl = document.getElementById('chat-input');
         const text = inputEl.value.trim();
@@ -460,7 +502,7 @@
         setTimeout(() => {
             let reply = getAIReply(text);
             addMessage(reply, 'bot');
-        }, 600);
+        }, 500);
     }
 
     function handleKeyPress(e) {
@@ -478,31 +520,57 @@
 
     function getAIReply(query) {
         const q = query.toLowerCase();
-        
+
+        // 1. التعريف
         if (q.includes("من انت") || q.includes("من أنت") || q.includes("عرف عن نفسك") || q.includes("مين انت")) {
             return "تم تطويري وصناعتي من قبل Why Matter لأكون عصاك اللي ما تعصاك.";
         }
 
-        const pureRealWorldKeywords = ["الطقس اليوم", "أخبار العالم", "سعر الدولار", "سيارة", "طيارة واقعية", "جامعة", "مدرسة واقعية", "شغل بالواقع"];
-        const isStrictlyOut = pureRealWorldKeywords.some(kw => q.includes(kw));
+        // 2. الفعاليات وميني جيمز للريلم (الإضافة الجديدة)
+        if (q.includes("فعالية") || q.includes("فعاليات") || q.includes("لعبة") || q.includes("العاب") || q.includes("مسابقة")) {
+            return `🎮 **أفكار فعاليات ومسابقات مرعبة ورائعة للريلم بتصميم Why Matter:**
 
-        if (isStrictlyOut) {
-            return "تم تطويري لأساعدك فقط بالريلم وما يتعلق بعالم ماينكرافت.";
+1. 👹 **فعالية القاتل والدمية (Killer Doll Realm):**
+لاعب يمسك المود وسلاح قوي ويكون القاتل السريع، وباقي اللاعبين يهربون ويصلحون أجهزة ريدستون بالماب عشان يفتحون بوابة الهروب!
+
+2. 🏹 **حرب القلاع والريدستون (Castle Siege):**
+فريقين، كل فريق يبني قلعته ويدعمها بمدفعية TNT أوتوماتيكية، والفائز اللي يدمر كريستالة نذر القلعة الثانية الأول!
+
+3. 🏃‍♂️ **متاهة الموت بالـ Bedrock:**
+متاهة مظلمة تحت الأرض مليانة فخاخ ريدستون ومشروبات إغماء وحيوانات مفترسة، واللي يخرج منها الأول يكسب 64 حبة دايموند!`;
         }
 
-        if (q.includes("بناء") || q.includes("بنايات") || q.includes("ابني") || q.includes("تصميم") || q.includes("افكار بناء") || q.includes("أفكار بناء")) {
-            return `أهلاً يا ${userData.name}! إليك أفكار بنايات رهيبة تناسب الريلم:\n1. قصر كلاسيكي أو قلعة نذر بأسلوب الجوثيك (Gothic style).\n2. مجلس أمة / برلمان مصمم بالحجر والمصباح الريدستوني للحوارات والتصويت بين أعضاء الريلم.\n3. مدينة تحت الأرض (Underground City) مضاءة بالأميثيست والروست.\n4. برج مراقبة أوتوماتيكي فيه بوابات ريدستون وأبراج إرسال!`;
+        // 3. خطط كشف البيوت
+        if (q.includes("كشف") || q.includes("بيوت") || q.includes("مكان") || q.includes("مقرات")) {
+            return `أبشر يا ${userData.name}! إليك أحدث تكتيك لكشف البيوت والمقرات المخفية بالريلم:
+
+1. 🗺️ **خريطة الـ Cartography Table:** حط خريطة تحديد وراقب حركة اللاعبين لما يختفون فجأة بالماب.
+2. ⛏️ **تتبع خطوط التنقيب (Y=-59):** اغلب اللاعبين يحفرون ممرات على عمق الدايموند لبيوتهم التحت أرضية.
+3. 🐷 **خدعة Composter X-Ray:** اصنع حفرة قطعتين وحط Composter وفوقها Gravel، وسوي X-Ray لكشف الكهوف والغرف السرية!`;
         }
 
-        if (q.includes("سياسه") || q.includes("سياسة") || q.includes("مجلس") || q.includes("ديموقراط") || q.includes("ديمقراط") || q.includes("قوانين") || q.includes("ادارة") || q.includes("نظام")) {
-            return `لتطبيق نظام سياسي أو ديمقراطي مميز داخل قاعة مجلس الأمة بالريلم:\n- **نظام التصويت الريدستوني:** كل عضو يدخل غرفة تصويت مصغرة ويرمي خشب/دايموند في الهوبر لتسجيل صوته تلقائياً على الشاشة.\n- **دستور الريلم:** كتاب وقلم (Book & Quill) يتم وضعه على منصة القراءة (Lectern) فيه قوانين السيرفر، عقوبات التخريب، وحقوق كل لاعب.\n- **انتخابات الأونرية/المشرفين:** فترة انتخابية كل شهر يصوت فيها أعضاء السيرفر للاعب الذي يمثلهم ويمسك رتبة الإدارة!`;
+        // 4. خطة الاستدراج
+        if (q.includes("استدراج") || q.includes("خدعة") || q.includes("فخ")) {
+            return `يا بطل يا ${userData.name}! خطة الاستدراج التكتيكية:
+اقترح عليهم صفقة دايموند أو نذرايت، وقبل اللقاء اشرب مشروب اختفاء (Invisibility) وافسخ دروعك، وتابعهم من مسافة بعيدة لمقراتهم! 
+
+تبي نجهز فخ ريدستون TNT مخفي عند مدخل بيوتهم؟`;
         }
 
-        if (q.includes("قتال") || q.includes("سلاح") || q.includes("دروع") || q.includes("حرب") || q.includes("pvp")) {
-            return `بما أن أسلوبك هو (${userData.style}), ننصحك بالاعتماد على دروع النذرايت الكاملة بـ Protection IV، ومجموعات التناغم بين القوس والدرع، وتجهيز ساحة PvP مخصصة ومحاطة بالـ Bedrock لضمان عدالة القتال بالريلم!`;
+        // 5. خطط الدفاع وحماية المقر
+        if (q.includes("دفاع") || q.includes("احمي") || q.includes("حماية") || q.includes("غدر")) {
+            return `🛡️ **خطة تأمين مقرك بالريلم يا ${userData.name}:**
+1. ابنِ بيتك بعيداً عن الـ Spawn بمقدار لا يقل عن 5000 بلوكة.
+2. احفر مدخل مقرك تحت بحيرة لافا أو ماء، واستخدم الـ Observer مع المكبس المخفي.
+3. حط جرس إنذار بريدستون ينبهك لو دخل أي شخص نطاق حمايتك!`;
         }
 
-        return `أهلاً بك يا ${userData.name}. بصفتي مستشارك الخاص Jarvi لتحقيق هدفك (${userData.goal}), أنا جاهز لإعطائك أفضل الأفكار، أنظمة الريدستون، تصاميم المباني، وخطط إدارة السيرفر بالريلم! ما الخطوة التالية التي تريد تنفيذها؟`;
+        // 6. الحوارات العامة
+        if (q.includes("اي") || q.includes("اوكي") || q.includes("تمام") || q.includes("كمل") || q.includes("شلون")) {
+            return `أنا معاك يا ${userData.name}! قولي شنو الخطوة الجاية اللي نخطط لها بالريلم؟ نجهز فعالية، أو نكشف مقر أحد الخصوم؟`;
+        }
+
+        return `أهلاً بك يا ${userData.name}. بصفتي مستشارك Jarvi لتحقيق هدفك (${userData.goal})، أنا جاهز لأي خطة أو فكرة بالريلم! قولي شنو المطلوب ونسويه مباشرة!`;
     }
 </script>
 
