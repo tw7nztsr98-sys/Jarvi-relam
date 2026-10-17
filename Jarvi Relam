@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVI REALM</title>
+    
+    <!-- إعدادات تحويل الموقع إلى تطبيق iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="JARVI">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192/000000/ff0000?text=JARVI">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Amiri:ital,wght@0,700;1,700&family=Noto+Sans+Arabic:wght@400;700;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #000;
+            color: #8b0000;
+            font-family: 'Noto Sans Arabic', 'Amiri', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #000000 90%);
+        }
+
+        /* تأثير التشويش والغموض المرعب background noise */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* 1. شاشة الدخول الأولى */
+        #entry-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.2);
+        }
+
+        .dev-title {
+            font-family: 'Amiri', 'Noto Sans Arabic', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            animation: flicker 3s infinite;
+        }
+
+        .realm-subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #660000;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px #000;
+        }
+
+        .enter-btn {
+            background: linear-gradient(180deg, #1a0000 0%, #000 100%);
+            border: 1px solid #8b0000;
+            color: #ff0000;
+            padding: 14px 45px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 2px;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.4);
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        .enter-btn:active {
+            background: #8b0000;
+            color: #000;
+            box-shadow: 0 0 30px #ff0000;
+            transform: scale(0.95);
+        }
+
+        /* 2. شاشة العد التنازلي */
+        #countdown-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 90;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .countdown-number {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #ff0000;
+            text-shadow: 0 0 40px #ff0000, 0 0 80px #8b0000;
+            animation: pulse 1s infinite;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* 3. الواجهة الرئيسية للذكاء الاصطناعي */
+        #main-container {
+            display: none;
+            width: 100%;
+            max-width: 650px;
+            min-height: 100vh;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 25px;
+            background: rgba(5, 0, 0, 0.7);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(139, 0, 0, 0.1);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            line-height: 2;
+            white-space: pre-wrap;
+            font-size: 1.2rem;
+            color: #d1d1d1;
+            text-shadow: 0 0 3px rgba(255, 0, 0, 0.3);
+        }
+
+        .sub-trans {
+            display: block;
+            color: #555555;
+            font-size: 0.8rem;
+            font-family: 'Cinzel', serif;
+            margin-top: 6px;
+            direction: ltr;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .opt-btn {
+            background: rgba(15, 0, 0, 0.85);
+            border: 1px solid #4a0000;
+            color: #b3b3b3;
+            padding: 16px;
+            border-radius: 3px;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .opt-btn:active {
+            border-color: #ff0000;
+            color: #ffffff;
+            background: rgba(80, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .custom-input {
+            flex-grow: 1;
+            background: #050000;
+            border: 1px solid #550000;
+            color: #fff;
+            padding: 14px;
+            border-radius: 3px;
+            font-size: 0.95rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .custom-input:focus {
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .send-btn {
+            background: #2a0000;
+            border: 1px solid #660000;
+            color: #ff3333;
+            padding: 0 22px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .send-btn:active {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 15px #ff0000;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+            52% { opacity: 0.4; }
+            54% { opacity: 0.9; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. شاشة الدخول الأولى -->
+    <div id="entry-screen">
+        <div class="dev-title">من صناعة وتطوير Why Matter</div>
+        <div class="realm-subtitle">jarvi</div>
+        <button class="enter-btn" onclick="startExperience()">[ دخول ]</button>
+    </div>
+
+    <!-- 2. شاشة العد التنازلي -->
+    <div id="countdown-screen">
+        <div class="countdown-number" id="cnt">3</div>
+    </div>
+
+    <!-- 3. الواجهة الرئيسية -->
+    <div id="main-container">
+        <div class="chat-box" id="chatBox">
+            <div class="message" id="typewriterText"></div>
+        </div>
+
+        <div class="options-container" id="optionsBox" style="display: none;">
+            <button class="opt-btn" onclick="selectOption('من أنت ؟')">
+                من أنت ؟
+                <span class="sub-trans">Who are you?</span>
+            </button>
+            <button class="opt-btn" onclick="selectOption('ما أسلوبك في القتال بالريلم ؟')">
+                ما أسلوبك في القتال بالريلم ؟
+                <span class="sub-trans">What is your fighting style in the realm?</span>
+            </button>
+            <button class="opt-btn" onclick="selectOption('ما الفكرة التي تريد أن أساعدك فيها ؟')">
+                ما الفكرة التي تريد أن أساعدك فيها ؟
+                <span class="sub-trans">What is the idea you want me to help you with?</span>
+            </button>
+
+            <div class="input-group">
+                <input type="text" id="userInput" class="custom-input" placeholder="اسأل عن الممالك، الحروب، أو الأفكار...">
+                <button class="send-btn" onclick="sendCustomQuestion()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const heartbeatAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        const keyAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+        const beepAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
+        
+        heartbeatAudio.loop = true;
+
+        function startExperience() {
+            document.getElementById('entry-screen').style.display = 'none';
+            document.getElementById('countdown-screen').style.display = 'flex';
+            
+            heartbeatAudio.play().catch(() => {});
+
+            let count = 3;
+            const cntElem = document.getElementById('cnt');
+            
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    cntElem.innerText = count;
+                    beepAudio.currentTime = 0;
+                    beepAudio.play().catch(() => {});
+                } else {
+                    clearInterval(timer);
+                    document.getElementById('countdown-screen').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'flex';
+                    initAIIntro();
+                }
+            }, 1000);
+        }
+
+        // دالة طباعة النصوص بمسافات صريحة 100%
+        function typeWriter(text, elementId, speed = 35, callback = null) {
+            const elem = document.getElementById(elementId);
+            elem.innerHTML = '';
+            let index = 0;
+
+            function writeChar() {
+                if (index < text.length) {
+                    const char = text.charAt(index);
+                    elem.textContent += char;
+                    index++;
+                    
+                    if (char !== ' ') {
+                        keyAudio.currentTime = 0;
+                        keyAudio.play().catch(() => {});
+                    }
+                    setTimeout(writeChar, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            writeChar();
+        }
+
+        function initAIIntro() {
+            const introText = "مرحباً بك في JARVI REALM...\nأنا المساعد الذكي المخصص لخدمتك بالريلم. اختر من الخيارات أدناه أو اطرح سؤالك مباشر.";
+            typeWriter(introText, 'typewriterText', 35, () => {
+                document.getElementById('optionsBox').style.display = 'flex';
+            });
+        }
+
+        function selectOption(arText) {
+            processQuery(arText);
+        }
+
+        function sendCustomQuestion() {
+            const input = document.getElementById('userInput');
+            const val = input.value.trim();
+            if (val !== '') {
+                processQuery(val);
+                input.value = '';
+            }
+        }
+
+        function processQuery(query) {
+            const lowerQuery = query.toLowerCase();
+            let response = "";
+
+            if (lowerQuery.includes("من انت") || lowerQuery.includes("من أنت") || lowerQuery.includes("اسمك") || lowerQuery.includes("شسمك") || lowerQuery.includes("منو انت")) {
+                response = "أنا مساعدك الخاص ، مستعد لمساعدتك وجعلك تتطور أكثر بالريلم .";
+            }
+            else if (lowerQuery.includes("قتال") || lowerQuery.includes("أسلوب") || lowerQuery.includes("فكرة") || lowerQuery.includes("مملكة") || lowerQuery.includes("حرب") || lowerQuery.includes("بناء") || lowerQuery.includes("ريلم") || lowerQuery.includes("ماين كرافت")) {
+                if (lowerQuery.includes("قتال")) {
+                    response = "أسلوب القتال بالريلم يعتمد على الاستراتيجية والخدع التكتيكية، واستخدام خطط المباغتة والدفاع عن القلاع بالريدستون.";
+                } else if (lowerQuery.includes("فكرة")) {
+                    response = "أستطيع مساعدتك في بناء فكرة مملكة مرعبة، أو تصميم نظام حماية تلقائي لقاعدتك باستخدام آليات الماين كرافت الذكية.";
+                } else {
+                    response = "أنا هنا لمساعدتك في كل ما يخص ريلم Jarvi من حروب، بناء ممالك، وتطوير المهارات.";
+                }
+            }
+            else {
+                response = "تم برمجتي من قبل المطور Why Matter للريلم المتواضع فقط .";
+            }
+
+            document.getElementById('optionsBox').style.display = 'none';
+            typeWriter(response, 'typewriterText', 35, () => {
+                setTimeout(() => {
+                    document.getElementById('optionsBox').style.display = 'flex';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
